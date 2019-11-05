@@ -1,10 +1,9 @@
 module.exports = {
-  win32: {
-    "Cannot find module '(.*?)'": "nexss install js <package>",
-    "Cannot open include file: 'dns_sd.h'": `Do you have bonjour SDK installed? 
+  "fatal error: '(.*?)' file not found.": "nexss install cpp <package>",
+  "Cannot find module '(.*?)'": "nexss install cpp <package>",
+  "Cannot open include file: 'dns_sd.h'": `Do you have bonjour SDK installed? 
 https://developer.apple.com/download/more/
 (Remember to restart your computer after installation.)`
-  }
 };
 
 //  "Cannot open include file: 'dns_sd.h'": {

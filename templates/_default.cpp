@@ -29,8 +29,8 @@ int main()
         document.Parse<0>(line.c_str());
         //document["start"] = 1000000000;
         // FIXME: fix the printf to format string.. bow output is wrong __cplusplus_
-        Pointer("/outputCPP").Set(document, "Hello from C++ 17!");
-        // document.AddMember("outputCPP", "Hello from C++! ");
+        Pointer("/test").Set(document, "test");
+        //document.AddMember("outputCPP", "Hello from C++! ");
 
         std::cout << stringify(document) << std::endl;
     }

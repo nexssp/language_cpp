@@ -30,7 +30,7 @@ int main()
         //document["start"] = 1000000000;
         // FIXME: fix the printf to format string.. bow output is wrong __cplusplus_
         Pointer("/outputCPP").Set(document, "Hello from C++ 17!");
-        // document.AddMember("outputCPP", "Hello from C++! ");
+        //document.AddMember("outputCPP", "Hello from C++! ");
 
         std::cout << stringify(document) << std::endl;
     }
