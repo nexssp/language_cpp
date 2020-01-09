@@ -39,7 +39,7 @@
 
 //If declaring more than one variable of the same type, they can all be declared in a single statement by separating their identifiers with commas.
   // For example:
-int a, b, c;
+  int a, b, c;
 
 ///INITIALIZATION OF VARIABLES
  //3 ways:
