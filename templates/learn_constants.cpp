@@ -53,7 +53,5 @@ constexpr int bar2 = foo1;
 
 //Again, constants are treated just like regular variables except that their values cannot be modified after their definition.
 
-//Integer Literals
-
 }
 
