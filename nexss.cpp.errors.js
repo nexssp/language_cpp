@@ -3,7 +3,9 @@ module.exports = {
   "Cannot find module '(.*?)'": "nexss install cpp <package>",
   "Cannot open include file: 'dns_sd.h'": `Do you have bonjour SDK installed? 
 https://developer.apple.com/download/more/
-(Remember to restart your computer after installation.)`
+(Remember to restart your computer after installation.)`,
+  "warning: unused variable '(.*?)'":
+    "Variable '<found1>' is declared but never used. Please delete variable declaration or use it somewere in your code."
 };
 
 //  "Cannot open include file: 'dns_sd.h'": {
