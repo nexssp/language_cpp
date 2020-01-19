@@ -13,6 +13,7 @@ int main()
 //Character types: They can represent a single character, such as 'A' or '$'.
 //The most basic type is char, which is a one-byte character. Other types are also provided for wider characters.
 char ch = 'z';//initialization  = assigning value in the time of definition of object
+
 ch = 'Z'; // assignment of new value(Z is different letter than z in coding standard)
 std::cout << ch << std::endl;
 //creating object of fundamental type char and initializing it value of character "z"
@@ -23,17 +24,22 @@ std::cout << ch << std::endl;
 int k{}; // using  brackets after k results initialization of zero value
 std::cout << k << std::endl;
 k = -100;     // assigning
-int m;       // just definition (value can be different)
+int m{};       // just definition (value can be different)
+std::cout << m << std::endl;
 int i = 44; // definition and initialization
+std::cout << i << std::endl;
 
 //Floating-point types: They can represent real values, such as 3.14 or 0.01, with different levels of precision,
 // depending on which of the three floating-point types is used.
 double d = 3.1415;
 float f = 3.1415;
+std::cout << d << std::endl;
+std::cout << f << std::endl;
 
 //Bool type: The bool type can only represent one of two states, true or false.
 bool IsGameOver = false;
 IsGameOver = true; // or IsGameOver = 1;
+
 
 //DECLARATION OF VARIABLES
 //C++ is a strongly-typed language, and requires every variable to be declared with its type before its first use.
@@ -41,22 +47,25 @@ IsGameOver = true; // or IsGameOver = 1;
 //The syntax to declare a new variable in C++ is straightforward:
 //we simply write the type followed by the variable name (i.e., its identifier).
 //For example:
-int aaa;
-float mynumber;
+int aaa{};
+float mynumber{};
+std::cout << aaa << std::endl;
+std::cout << mynumber << std::endl;
 //These are two valid declarations of variables.
 //Once declared, the variables aaa and mynumber can be used within the rest of their scope in the program.
 
 //If declaring more than one variable of the same type, they can all be declared in a single statement
 // by separating their identifiers with commas.
 // For example:
-int a, b, c;
+int a = 0, b = 0, c = 0;
+std::cout << a << " " << b << " " << c << std::endl;
 
 //INITIALIZATION OF VARIABLES:
 //3 ways:
 int aa = 0;
 int bb{0};
 int cc(0);
-
+std::cout << aa << " " << bb << " " << cc << std::endl;
 //TYPE DEDUCTION: auto and decltype
 //When a new variable is initialized, the compiler can figure out what the type of the variable is automatically by the initializer.
 //For this, it suffices to use auto as the type specifier for the variable:
@@ -69,8 +78,8 @@ std::cout << bar << std::endl;// this print  a value of object bar
 
 //Variables that are not initialized can also make use of type deduction with the decltype specifier:
 int foo1 = 0;
-decltype(foo1) bar1;  // Here, bar1 is declared as having the same type as foo1.
-
+decltype(foo1) bar1 = 0;  // Here, bar1 is declared as having the same type as foo1.
+std::cout << bar1 << std::endl;
 // STRINGS
 //Fundamental types represenstd::cout << bar << std::endl;t the most basic types handled by the machines where the code may run.
 // But one of the major strengths of the C++ language is its rich set of compound types,
