@@ -5,12 +5,41 @@ languageConfig.description =
 languageConfig.url = "https://isocpp.org/";
 languageConfig.extensions = [".cpp", ".cc"];
 languageConfig.compiler = null;
+const installVCPKG = `${__dirname}/install/installVCPKG.ps1`;
+let vcpkgIncludePath;
+try {
+  console.log("Searching for vcpkg..");
+  vcpkgIncludePath = require("child_process")
+    .execSync(`cmd /c where vcpkg`)
+    .toString()
+    .trim();
+} catch (error) {
+  console.log("vcpkg seems to be not installed, installing..");
 
-const vcpkgIncludePath = require("child_process")
-  .execSync(`where vcpkg`)
-  .toString()
-  .trim();
+  require("child_process").execSync(
+    `Powershell -ExecutionPolicy ByPass -File ${installVCPKG}`,
+    {
+      stdio: "inherit"
+    }
+  );
 
+  vcpkgIncludePath = require("child_process").execSync(`cmd /c where vcpkg`, {
+    stdio: "inherit"
+  });
+
+  if (!vcpkgIncludePath) {
+    console.error(
+      "There was an error during setup of vcpkg which is package manager for C++."
+    );
+    const vcpkgExe = `${process.cwd()}/vcpkg/vcpkg.exe`;
+    if (require("fs").existsSync(vcpkgExe)) {
+      console.error(
+        `${vcpkgExe} exists, but there was an issue to add initialize the vcpkg.`
+      );
+    }
+    process.exit(1);
+  }
+}
 const VCpkgPath = `${require("path").dirname(
   vcpkgIncludePath
 )}/installed/x86-windows/include`;
@@ -55,14 +84,8 @@ languageConfig.languagePackageManagers = {
       require("child_process").execSync("vcpkg integrate project");
       console.log("initialized vcpkg project.");
     },
-    // if command not found in specification
-    // run directly on package manager
     else: "vcpkg"
   }
 };
 
 module.exports = languageConfig;
-// console.log(languageConfig.get(`errors`));
-// console.log(languageConfig.get("author"));
-// console.log(Object.keys(languageConfig.get("osPackageManagers")));
-// console.log(Object.keys(languageConfig.get("languagePackageManagers")));
