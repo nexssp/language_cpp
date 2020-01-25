@@ -8,7 +8,6 @@ languageConfig.compiler = null;
 const installVCPKG = `${__dirname}/install/installVCPKG.ps1`;
 let vcpkgIncludePath;
 try {
-  console.log("Searching for vcpkg..");
   vcpkgIncludePath = require("child_process")
     .execSync(`cmd /c where vcpkg`)
     .toString()
@@ -22,24 +21,32 @@ try {
       stdio: "inherit"
     }
   );
+}
 
-  vcpkgIncludePath = require("child_process").execSync(`cmd /c where vcpkg`, {
-    stdio: "inherit"
-  });
-
+if (!vcpkgIncludePath) {
+  try {
+    vcpkgIncludePath = require("child_process")
+      .execSync(`cmd /c where vcpkg`, {
+        stdio: "inherit"
+      })
+      .toString()
+      .trim();
+  } catch (error) {
+    displayError();
+    process.exit(1);
+  }
   if (!vcpkgIncludePath) {
     console.error(
       "There was an error during setup of vcpkg which is package manager for C++."
     );
     const vcpkgExe = `${process.cwd()}/vcpkg/vcpkg.exe`;
     if (require("fs").existsSync(vcpkgExe)) {
-      console.error(
-        `${vcpkgExe} exists, but there was an issue to add initialize the vcpkg.`
-      );
+      displayError();
     }
     process.exit(1);
   }
 }
+
 const VCpkgPath = `${require("path").dirname(
   vcpkgIncludePath
 )}/installed/x86-windows/include`;
@@ -87,5 +94,14 @@ languageConfig.languagePackageManagers = {
     else: "vcpkg"
   }
 };
+
+function displayError() {
+  console.error(
+    "\x1b[33mvcpkg not found. Have you restarted terminal/powershell?"
+  );
+  console.error(
+    `Otherwise please add vckg path: ${process.env.NEXSS_APPS_PATH}\\vcpkg to your system PATH variable.\x1b[0m`
+  );
+}
 
 module.exports = languageConfig;

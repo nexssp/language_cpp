@@ -1,4 +1,6 @@
 # https://github.com/Microsoft/vcpkg/tree/master/docs/examples
+# If this is not run from Nexss Programmer it will install it 
+# in the C:\vcpkg
 Write-Host "Installing.. 'vcpkg' package manager, more:"
 Write-Host "https://github.com/Microsoft/vcpkg"
 Write-Host "Current Directory: $((Get-Location).path)"
@@ -27,8 +29,19 @@ if (!(Test-Path $exeFile -PathType Leaf)) {
 
 Write-Host "Add vcpkg to the system path.."
 
-# Change User to Machine  
-[System.Environment]::SetEnvironmentVariable("Path", "$env:Path;$installPath", "User") # for the user
+   
+if ($($env:Path).ToLower().Contains($($installPath).ToLower()) -eq $true) {
+    $env:Path = [Environment]::GetEnvironmentVariable('Path', [System.EnvironmentVariableTarget]::User);
+}
+else {
+    Write-Host "Adding $installPath to the users PATH environment variable."
+    [System.Environment]::SetEnvironmentVariable("Path", $installPath + ";" + [System.Environment]::GetEnvironmentVariable("Path", "User"), "User") # for the user
+    # Making sure there are no duplicates in the PATH 
+    [Environment]::SetEnvironmentVariable('Path', (([Environment]::GetEnvironmentVariable('Path', 'User') -split
+                ';' | Sort-Object -Unique) -join ';'), 'User')
+}
+	
+# Reload the environment variables with new ones
 $env:Path = [System.Environment]::GetEnvironmentVariable("Path", "Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path", "User") 
 
 vcpkg integrate install
