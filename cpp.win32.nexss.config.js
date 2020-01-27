@@ -57,6 +57,11 @@ languageConfig.builders = {
     //build: "pkg --output <destinationFile> --out-path <destinationPath> <file>",
     command: "clang++",
     build: function() {
+      let triplet = "x64-windows";
+      if (process.arch !== "x64") {
+        triplet = "x86-windows";
+      }
+      process.env.VCPKG_DEFAULT_TRIPLET = triplet;
       return "clang++";
     },
     // build: function() {
