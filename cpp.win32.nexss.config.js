@@ -46,10 +46,13 @@ if (!vcpkgIncludePath) {
     process.exit(1);
   }
 }
-
+let triplet = "x64-windows";
+if (process.arch !== "x64") {
+  triplet = "x86-windows";
+}
 const VCpkgPath = `${require("path").dirname(
   vcpkgIncludePath
-)}/installed/x86-windows/include`;
+)}/installed/${triplet}/include`;
 
 languageConfig.builders = {
   llvm: {
