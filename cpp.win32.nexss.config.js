@@ -50,29 +50,31 @@ let triplet = "x64-windows";
 if (process.arch !== "x64") {
   triplet = "x86-windows";
 }
+
+triplet = "x86-windows";
+
 const VCpkgPath = `${require("path").dirname(
   vcpkgIncludePath
 )}/installed/${triplet}/include`;
 
 languageConfig.builders = {
-  llvm: {
-    install: "scoop install llvm",
-    //build: "pkg --output <destinationFile> --out-path <destinationPath> <file>",
-    command: "clang++",
+  gcc: {
+    install: "scoop install gcc",
+    command: "g++",
     build: function() {
       let triplet = "x64-windows";
       if (process.arch !== "x64") {
         triplet = "x86-windows";
       }
       process.env.VCPKG_DEFAULT_TRIPLET = triplet;
-      return "clang++";
+      return "g++";
     },
     // build: function() {
     //   const path = require("path");
     //   //take command from current folder
     //   return `${path.join(__dirname, "customCompiler.win32.cpp.cmd")}`;
     // },
-    args: `-std=c++17 -Xclang -flto-visibility-public-std -Wall -isystem ${VCpkgPath} -o <destinationFile> <file>`,
+    args: `-std=c++17 -isystem ${VCpkgPath} -o <destinationFile> <file>`,
     // C++ needs to be build to exe, so no compile option
     help: ``
   },
