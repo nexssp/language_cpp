@@ -4,7 +4,6 @@ languageConfig.description =
   "C++ is a general-purpose programming language created by Bjarne Stroustrup.";
 languageConfig.url = "https://isocpp.org/";
 languageConfig.extensions = [".cpp", ".cc"];
-languageConfig.compiler = null;
 const installVCPKG = `${__dirname}/install/installVCPKG.ps1`;
 let vcpkgIncludePath;
 try {
@@ -74,7 +73,7 @@ languageConfig.builders = {
     //   //take command from current folder
     //   return `${path.join(__dirname, "customCompiler.win32.cpp.cmd")}`;
     // },
-    args: `-std=c++17 -isystem ${VCpkgPath} -o <destinationFile> <file>`,
+    args: `-std=c++17 -isystem ${VCpkgPath} -o <destinationFile> <file> && <destinationFile>`,
     // C++ needs to be build to exe, so no compile option
     help: ``
   },
