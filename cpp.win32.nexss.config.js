@@ -3,6 +3,9 @@ languageConfig.title = "C++";
 languageConfig.description =
   "C++ is a general-purpose programming language created by Bjarne Stroustrup.";
 languageConfig.url = "https://isocpp.org/";
+languageConfig.founders = ["Bjarne Stroustrup"];
+languageConfig.developers = [""];
+languageConfig.years = ["1983"];
 languageConfig.extensions = [".cpp", ".cc"];
 const installVCPKG = `${__dirname}/install/installVCPKG.ps1`;
 let vcpkgIncludePath;
