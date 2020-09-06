@@ -5,7 +5,7 @@ function getInstaller() {
     case "win32":
       return "vcpkg install rapidjson";
     case "linux":
-      return 'is_user_root () { [ ${EUID:-$(id -u)} -eq 0 ]; }; if is_user_root; then apt install rapidjson-dev; else echo "\\e[1m\\e[33mPlease run as root to install rapidjson-dev or install it by \nsudo apt install rapidjson-dev\\e[0m" ; exit 1 ; fi ;';
+      return "is_user_root () { [ ${EUID:-$(id -u)} -eq 0 ]; }; if is_user_root; then apt install -y rapidjson-dev; else sudo apt install -y rapidjson-dev ; fi ;";
     case "darwin":
       return "brew install rapidjson-dev";
     default:
