@@ -20,7 +20,7 @@ try {
   require("child_process").execSync(
     `Powershell -ExecutionPolicy ByPass -File ${installVCPKG}`,
     {
-      stdio: "inherit"
+      stdio: "inherit",
     }
   );
 }
@@ -29,7 +29,7 @@ if (!vcpkgIncludePath) {
   try {
     vcpkgIncludePath = require("child_process")
       .execSync(`cmd /c where vcpkg`, {
-        stdio: "inherit"
+        stdio: "inherit",
       })
       .toString()
       .trim();
@@ -63,7 +63,7 @@ languageConfig.builders = {
   gcc: {
     install: "scoop install gcc",
     command: "g++",
-    build: function() {
+    build: () => {
       let triplet = "x64-windows";
       if (process.arch !== "x64") {
         triplet = "x86-windows";
@@ -78,14 +78,14 @@ languageConfig.builders = {
     // },
     args: `-std=c++17 -isystem ${VCpkgPath} -o <destinationFile> <file> && <destinationFile>`,
     // C++ needs to be build to exe, so no compile option
-    help: ``
+    help: ``,
   },
   "g++": {
     install: "scoop install llvm",
     command: "g++",
     args: "-o <file>.exe && <file>.exe && rm <file>.exe",
-    help: ``
-  }
+    help: ``,
+  },
 };
 languageConfig.compilers = {};
 languageConfig.errors = require("./nexss.cpp.errors");
@@ -96,15 +96,20 @@ languageConfig.languagePackageManagers = {
     installed: "vcpkg list",
     search: "vcpkg search",
     install: "vcpkg install",
+    update: "bootstrap-vcpkg.bat && vcpkg update",
     uninstall: "vcpkg remove",
     help: "vcpkg --help",
     version: "vcpkg version",
     init: () => {
-      require("child_process").execSync("vcpkg integrate project");
-      console.log("initialized vcpkg project.");
+      try {
+        require("child_process").execSync("vcpkg integrate project");
+        console.log("initialized vcpkg project.");
+      } catch (error) {
+        // console.error(error);
+      }
     },
-    else: "vcpkg"
-  }
+    else: "vcpkg",
+  },
 };
 
 function displayError() {

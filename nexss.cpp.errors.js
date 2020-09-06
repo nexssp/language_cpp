@@ -8,7 +8,9 @@ https://developer.apple.com/download/more/
     "Variable '<found1>' is declared but never used. Please delete variable declaration or use it somewere in your code.",
   "'rapidjson/document.h' file not found": "xxxx",
   "fatal error: 'inttypes.h' file not found":
-    "You may have installed another compiler (eg visualc 16). Uninstall eg scoop uninstall visualc"
+    "You may have installed another compiler (eg visualc 16). Uninstall eg scoop uninstall visualc",
+  "fatal error: allegro5/allegro.h: No such file or directory":
+    "nexss cpp install allegro5",
 };
 
 //  "Cannot open include file: 'dns_sd.h'": {
