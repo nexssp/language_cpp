@@ -13,7 +13,7 @@ languageConfig.extensions = [".cpp", ".cc"];
 const installVCPKG = `${__dirname}/install/installVCPKG.ps1`;
 let vcpkgIncludePath;
 let VCpkgPath;
-if (process.platform == "win32") {
+if (process.platform === "win32") {
   try {
     vcpkgIncludePath = require("child_process")
       .execSync(`cmd /c where vcpkg`)
@@ -32,6 +32,7 @@ if (process.platform == "win32") {
 }
 
 if (process.platform === "win32") {
+  console.log("sddddddddddddddddddddddddddddddddd", vcpkgIncludePath);
   if (!vcpkgIncludePath) {
     try {
       vcpkgIncludePath = require("child_process")
@@ -54,18 +55,17 @@ if (process.platform === "win32") {
       }
       process.exit(1);
     }
-
-    let triplet = "x64-windows";
-    if (process.arch !== "x64") {
-      triplet = "x86-windows";
-    }
-
-    triplet = "x86-windows";
-
-    VCpkgPath = `${require("path").dirname(
-      vcpkgIncludePath
-    )}/installed/${triplet}/include`;
   }
+  let triplet = "x64-windows";
+  if (process.arch !== "x64") {
+    triplet = "x86-windows";
+  }
+
+  triplet = "x86-windows";
+
+  VCpkgPath = `${require("path").dirname(
+    vcpkgIncludePath
+  )}/installed/${triplet}/include`;
   languageConfig.builders = {
     gcc: {
       install: "scoop install gcc",
