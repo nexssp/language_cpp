@@ -32,7 +32,6 @@ if (process.platform === "win32") {
 }
 
 if (process.platform === "win32") {
-  console.log("sddddddddddddddddddddddddddddddddd", vcpkgIncludePath);
   if (!vcpkgIncludePath) {
     try {
       vcpkgIncludePath = require("child_process")
