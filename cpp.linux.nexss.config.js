@@ -1,12 +1,6 @@
 let languageConfig = Object.assign({}, require("./cpp.win32.nexss.config"));
 const os = require("@nexssp/os");
 const sudo = os.sudo();
-const {
-  replaceCommandByDist,
-  dist,
-  version,
-} = require(`${process.env.NEXSS_SRC_PATH}/lib/osys`);
-
 const distName = os.name();
 languageConfig.dist = distName;
 
