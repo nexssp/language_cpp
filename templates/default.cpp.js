@@ -18,7 +18,7 @@ function getInstaller() {
         case os.distros.FEDORA:
           return replaceCommandByDist("dnf install -y rapidjson-devel");
         default:
-          return replaceCommandByDist("apt install -y rapidjson");
+          return replaceCommandByDist("apt install -y rapidjson*");
       }
 
     case "darwin":
