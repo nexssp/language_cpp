@@ -1,21 +1,26 @@
 let languageConfig = Object.assign({}, require("./cpp.win32.nexss.config"));
-let sudo = "sudo ";
-if (process.getuid && process.getuid() === 0) {
-  sudo = "";
-}
-
+const os = require("@nexssp/os");
+const sudo = os.sudo();
 const {
   replaceCommandByDist,
   dist,
   version,
 } = require(`${process.env.NEXSS_SRC_PATH}/lib/osys`);
 
-const distName = dist();
+const distName = os.name();
 languageConfig.dist = distName;
+
+const vcpkgInstall = `echo Installing package manager vcpkg..
+git clone https://github.com/microsoft/vcpkg ${process.env.NEXSS_APPS_PATH}/vcpkg
+${sudo}apt-get install curl unzip tar
+${process.env.NEXSS_APPS_PATH}/vcpkg/bootstrap-vcpkg.sh
+cd ${process.env.NEXSS_APPS_PATH}/vcpkg
+${sudo}ln -s $(pwd)/vcpkg /usr/bin/vcpkg`;
 
 languageConfig.builders = {
   gcc: {
-    install: replaceCommandByDist(`${sudo}apt install -y gcc`),
+    install: os.replacePMByDistro(`${sudo}apt install -y gcc
+${vcpkgInstall}`),
     command: "g++",
     build: () => {
       return "g++";
@@ -24,52 +29,34 @@ languageConfig.builders = {
     help: ``,
   },
   "g++": {
-    install: replaceCommandByDist(`${sudo}apt install -y llvm`),
+    install: os.replacePMByDistro(`${sudo}apt install -y llvm
+${vcpkgInstall}`),
     command: "g++",
     args: "-o <file>.exe && <file>.exe && rm <file>.exe",
     help: ``,
   },
 };
 
-if (distName === "Ubuntu" || distName === "Debian") {
-  languageConfig.builders.gcc.install += " build-essential";
-  languageConfig.builders["g++"].install += " build-essential";
-} else if (distName === "Oracle Linux Server") {
-  languageConfig.builders.gcc.install += " gcc-c++";
-  languageConfig.builders["g++"].install += " gcc-c++";
-}
-
-switch (
-  distName
-  // case "Oracle":
-  // case "Oracle Linux Server":
-  //   if (version) {
-  //     //if here for older versions of nexssp
-  //     const distVersion = version(); // *1 converts to number
-  //     if (distVersion >= 8) {
-  //       // TODO: recognize the slim version
-  //       languageConfig.builders.gcc.install = `dnf update -y && ${sudo}dnf install -y php php-json php-imap`;
-  //     } else {
-  //       languageConfig.builders.gcc.install = `${sudo}yum update -y && ${sudo}yum install -y oracle-epel-release* && ${sudo}yum install -y php php-json php-imap`;
-  //     }
-  //   }
-  //   break;
-  // case "Alpine Linux":
-  //   languageConfig.builders.gcc.install = `${sudo}apk add php php7-json php-imap`;
-  //   break;
-  // case "Arch Linux":
-  //   languageConfig.builders.gcc.install = `${sudo}pacman -Sy --noconfirm php php-imap`;
-  //   break;
-  // case "Fedora":
-  //   languageConfig.builders.gcc.install = `${sudo}dnf install -y php php-json php-imap`;
-  //   break;
-  // case "CentOS Linux":
-  //   languageConfig.builders.gcc.install = `${sudo}yum install -y epel-release* && yum install -y php php-json php-imap`;
-  //   break;
-  // case "RHEL Linux":
-  //   languageConfig.builders.gcc.install = `${sudo}yum install -y php php-json php-imap`;
-  //   break;
-) {
+switch (distName) {
+  case os.distros.UBUNTU:
+  case os.distros.DEBIAN:
+    languageConfig.builders.gcc.install += `
+${sudo}apt-get install build-essential g++`;
+    languageConfig.builders["g++"].install += `
+${sudo}apt-get install build-essential g++`;
+    break;
+  case os.distros.ORACLE:
+    languageConfig.builders.gcc.install += `
+${sudo}apt-get install gcc-c++`;
+    languageConfig.builders["g++"].install += `
+${sudo}apt-get install gcc-c++`;
+  case os.distros.ARCH:
+    languageConfig.builders.gcc.install += `
+${sudo}apt-get install gcc-c++`;
+    languageConfig.builders["g++"].install += `
+${sudo}apt-get install gcc-c++`;
+  default:
+    break;
 }
 
 module.exports = languageConfig;

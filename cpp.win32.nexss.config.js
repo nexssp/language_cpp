@@ -126,7 +126,7 @@ function displayError() {
     "\x1b[33mvcpkg not found. Have you restarted terminal/powershell?"
   );
   console.error(
-    `Otherwise please add vckg path: ${process.env.NEXSS_APPS_PATH}\\vcpkg to your system PATH variable.\x1b[0m`
+    `Otherwise please add vckg path: ${process.env.NEXSS_APPS_PATH}/vcpkg to your system PATH variable.\x1b[0m`
   );
 }
 
