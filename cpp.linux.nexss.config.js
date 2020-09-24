@@ -6,14 +6,14 @@ languageConfig.dist = distName;
 
 const vcpkgInstall = `echo Installing package manager vcpkg..
 git clone https://github.com/microsoft/vcpkg ${process.env.NEXSS_APPS_PATH}/vcpkg
-${sudo}apt-get install curl unzip tar
+${sudo}apt-get install curl unzip tar cmake
 ${process.env.NEXSS_APPS_PATH}/vcpkg/bootstrap-vcpkg.sh
 cd ${process.env.NEXSS_APPS_PATH}/vcpkg
 ${sudo}ln -s $(pwd)/vcpkg /usr/bin/vcpkg`;
 
 languageConfig.builders = {
   gcc: {
-    install: os.replacePMByDistro(`${sudo}apt install -y gcc
+    install: os.replacePMByDistro(`${sudo}apt install -y gcc cmake
 ${vcpkgInstall}`),
     command: "g++",
     build: () => {

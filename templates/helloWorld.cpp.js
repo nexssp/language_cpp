@@ -17,6 +17,8 @@ function getInstaller() {
           return replaceCommandByDist("pacman -S --noconfirm -y rapidjson");
         case os.distros.FEDORA:
           return replaceCommandByDist("dnf install -y rapidjson-devel");
+        case os.distros.ALPINE:
+          return replaceCommandByDist("apk search -qe 'foo-*' | xargs apk add");
         default:
           return replaceCommandByDist("apt install -y rapidjson*");
       }
