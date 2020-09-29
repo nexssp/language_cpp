@@ -32,6 +32,10 @@ ${vcpkgInstall}`,
 };
 
 switch (distName) {
+  case os.distros.CENTOS:
+    // languageConfig.builders.gcc.install += ``;
+    languageConfig.builders.gcc.args = `-o <destinationFile> <file> && <destinationFile>`;
+    break;
   case os.distros.UBUNTU:
   case os.distros.DEBIAN:
     languageConfig.builders.gcc.install += `
