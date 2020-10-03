@@ -96,30 +96,31 @@ if (process.platform === "win32") {
 }
 languageConfig.compilers = {};
 languageConfig.errors = require("./nexss.cpp.errors");
-if (process.platform === "win32") {
-  languageConfig.languagePackageManagers = {
-    vcpkg: {
-      installation: `PowerShell.exe -File ${__dirname}/install/installVCPKG.bat`,
-      messageAfterInstallation: "", //this message will be displayed after this package manager installation, maybe some action needed etc.
-      installed: "vcpkg list",
-      search: "vcpkg search",
-      install: "vcpkg install",
-      update: "bootstrap-vcpkg.bat && vcpkg update",
-      uninstall: "vcpkg remove",
-      help: "vcpkg --help",
-      version: "vcpkg version",
-      init: () => {
-        try {
-          require("child_process").execSync("vcpkg integrate project");
-          console.log("initialized vcpkg project.");
-        } catch (error) {
-          // console.error(error);
-        }
-      },
-      else: "vcpkg",
+languageConfig.languagePackageManagers = {
+  vcpkg: {
+    installation:
+      process.platform === "win32"
+        ? `PowerShell.exe -File ${__dirname}/install/installVCPKG.bat`
+        : "",
+    messageAfterInstallation: "", //this message will be displayed after this package manager installation, maybe some action needed etc.
+    installed: "vcpkg list",
+    search: "vcpkg search",
+    install: "vcpkg install",
+    update: "bootstrap-vcpkg.bat && vcpkg update",
+    uninstall: "vcpkg remove",
+    help: "vcpkg --help",
+    version: "vcpkg version",
+    init: () => {
+      try {
+        require("child_process").execSync("vcpkg integrate project");
+        console.log("initialized vcpkg project.");
+      } catch (error) {
+        // console.error(error);
+      }
     },
-  };
-}
+    else: "vcpkg",
+  },
+};
 
 function displayError() {
   console.error(
