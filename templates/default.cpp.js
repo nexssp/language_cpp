@@ -1,24 +1,26 @@
 // additional operations for templates like copy extra libraries.
-
+const { vcpkgInstall } = require("../install/installVCPKG");
 function getInstaller() {
-  const os = require("@nexssp/os"); // this is included in main nexss programmer cli: @nexssp/cli
-
   switch (process.platform) {
     case "win32":
       return "vcpkg install rapidjson";
     case "linux":
-      const {
-        dist,
-        replaceCommandByDist,
-      } = require(`${process.env.NEXSS_SRC_PATH}/lib/osys`);
+      switch (process.distro) {
+        case process.distros.ARCH:
+          return process.replacePMByDistro(
+            "pacman -S --noconfirm -y rapidjson"
+          );
+        case process.distros.FEDORA:
+          return process.replacePMByDistro("dnf install -y rapidjson-devel");
 
-      switch (dist()) {
-        case os.distros.ARCH:
-          return replaceCommandByDist("pacman -S --noconfirm -y rapidjson");
-        case os.distros.FEDORA:
-          return replaceCommandByDist("dnf install -y rapidjson-devel");
+        // case process.distros.AMAZON:
+        // case process.distros.AMAZON_AMI:
         default:
-          return replaceCommandByDist("apt install -y rapidjson*");
+          return `${process.sudo}yum -y  groupinstall "Development Tools"
+${vcpkgInstall}
+${process.sudo}vcpkg install rapidjson`;
+
+          return process.replacePMByDistro("apt install -y rapidjson*");
       }
 
     case "darwin":
