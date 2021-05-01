@@ -30,6 +30,7 @@ switch (distName) {
   case process.distros.AMAZON:
   case process.distros.AMAZON_AMI:
     languageConfig.builders.gcc.install = `${sudo}yum -y  groupinstall "Development Tools"
+yum install -y gcc72-c++
 ${vcpkgInstall}`;
     break;
   case process.distros.CENTOS:
