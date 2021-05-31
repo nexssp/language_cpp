@@ -18,7 +18,8 @@ if (process.platform === "win32") {
     vcpkgIncludePath = require("child_process")
       .execSync(`cmd /c where vcpkg`)
       .toString()
-      .trim();
+      .trim()
+      .split(/\r?\n/)[0];
   } catch (error) {
     console.log("vcpkg seems to be not installed, installing..");
 
@@ -33,13 +34,15 @@ if (process.platform === "win32") {
 
 if (process.platform === "win32") {
   if (!vcpkgIncludePath) {
+    vcpkgIncludePath = require("child_process")
+      .execSync(`cmd /c where vcpkg`, {
+        stdio: "inherit",
+      })
+      .toString()
+      .trim()
+      .split(/\r?\n/)[0];
+
     try {
-      vcpkgIncludePath = require("child_process")
-        .execSync(`cmd /c where vcpkg`, {
-          stdio: "inherit",
-        })
-        .toString()
-        .trim();
     } catch (error) {
       displayError();
       process.exit(1);
@@ -64,7 +67,8 @@ if (process.platform === "win32") {
 
   VCpkgPath = `${require("path").dirname(
     vcpkgIncludePath
-  )}/installed/${triplet}/include`;
+  )}/installed/${triplet}/include`.trim();
+
   languageConfig.builders = {
     gcc: {
       install: "scoop install gcc",
