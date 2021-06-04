@@ -34,15 +34,16 @@ if (process.platform === "win32") {
 
 if (process.platform === "win32") {
   if (!vcpkgIncludePath) {
-    vcpkgIncludePath = require("child_process")
-      .execSync(`cmd /c where vcpkg`, {
-        stdio: "inherit",
-      })
-      .toString()
-      .trim()
-      .split(/\r?\n/)[0];
-
     try {
+      vcpkgIncludePath = require("child_process").execSync(
+        `cmd /c where vcpkg`,
+        {
+          stdio: "inherit",
+        }
+      );
+
+      if (vcpkgIncludePath && vcpkgIncludePath.toString)
+        vcpkgIncludePath = vcpkgIncludePath.toString().trim().split(/\r?\n/)[0];
     } catch (error) {
       displayError();
       process.exit(1);
@@ -104,7 +105,7 @@ languageConfig.languagePackageManagers = {
   vcpkg: {
     installation:
       process.platform === "win32"
-        ? `PowerShell.exe -File ${__dirname}/install/installVCPKG.bat`
+        ? `PowerShell.exe -File ${__dirname}/install/installVCPKG.ps1`
         : "",
     messageAfterInstallation: "", //this message will be displayed after this package manager installation, maybe some action needed etc.
     installed: "vcpkg list",
