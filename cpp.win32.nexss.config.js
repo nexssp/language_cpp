@@ -72,7 +72,8 @@ if (process.platform === "win32") {
 
   languageConfig.builders = {
     gcc: {
-      install: "scoop install gcc",
+      install:
+        "scoop bucket add dorado https://github.com/chawyehsu/dorado && scoop install dorado/nuwen-mingw-gcc && echo \033[1;31mNOTE: If you see errors you may want to restart terminal.\033[0m",
       command: "g++",
       build: () => {
         let triplet = "x64-windows";
