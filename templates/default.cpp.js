@@ -27,7 +27,7 @@ ${process.sudo}vcpkg install rapidjson`;
       return "brew install rapidjson-dev";
     default:
       console.error(`${process.platform} is not implemented.`);
-      break;
+      return ""
   }
 }
 
